@@ -1,0 +1,122 @@
+.prorfile {
+    padding-inline: 10px;
+}
+.profileDetailBox {
+    min-height: 300px;  
+    padding: 10px 100px;
+    border-bottom: 5px solid white;
+    border-radius: 5px;
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    background-color: rgba(255, 228, 196, 0.154);
+}
+
+.profilePictureShow {
+    min-width: 30%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    border-radius: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-right: 100px;
+}
+
+.profilePagePic {
+    width: 100%;
+    height: 100%;
+}
+
+.accountDesc {
+    /* padding-top: 60px; */
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    font-size: 17px;
+    box-sizing: border-box;
+}
+
+.accountConfig {
+    font-size: 20px;
+    display: flex;
+    justify-content: start;
+}
+
+.accountSocialStatus {
+    display: flex;
+    box-sizing: border-box;
+    width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+.profileOptions {
+    display: flex;
+
+}
+.messageEdit a {
+    color: white;
+    text-decoration: none;
+    padding: 7px 10px;
+    border-radius: 3px;
+    background-color: rgba(181, 168, 168, 0.212);
+}
+
+.all-user-posts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 50px;
+}
+
+.allUserPosts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+}
+
+
+.profilePost img {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 900px) {
+    .profileDetailBox {
+        padding: 10px 0;
+    }
+
+    .profilePictureShow {
+        margin-right: 10px;
+        margin-left: 30px;
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .prorfile {
+        padding-inline: 0;
+    }
+    .profileDetailBox {
+        padding: 0px 0;
+        align-items: center;
+    }
+
+    .profilePictureShow {
+        width: 50%;
+        align-items: center;
+    }
+
+    .profilePictureShow {
+        margin-right: 10px;
+        margin-left: 0;
+    }
+    .accountSocialStatus {
+        display: block;
+    }
+}

@@ -1,0 +1,91 @@
+import styles from './stories.module.css'
+import testImg from './tester.jpg'
+const Stories = () => {
+  return (
+    <div className={styles.storiesList}>
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+
+      <div className={styles.storyContainer}>
+        <div className={styles.storyProfileContainer}>
+          <img className={styles.storyProfilePicture} src={testImg} alt="" />
+        </div>
+        <div className={styles.storyUserName}>
+          abela_7...
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Stories
