@@ -14,7 +14,10 @@ import axios from 'axios'
 import useIsLoggedOut from '../../services/loggedOutStore'
 import apiClient from '../../services/apiClient'
 import logOutIcon from './logout-icon.webp'
+import useNavBarProperties from '../../services/NavbarPropertiesStore'
+
 const NavBar = () => {
+  const { collapsed, setCollapsed } = useNavBarProperties()
   const { isLoggedOut, setIsLoggedOut } = useIsLoggedOut();
   const navItemList = [
     {linkName: 'Home', homeIcon}
@@ -32,6 +35,28 @@ const NavBar = () => {
     });
     
   }
+  if (collapsed) return (
+    <div className={styles.navBarCollapsed}>
+      <div className={styles.logoContainerCollapsed}>
+        <img src={Logo2} className={styles.logoImg2Collapsed} alt="" />
+        
+      </div>
+      <NavItem collapsed={true} endPoint='/' linkName='Home' icon={homeIcon} />
+      <NavItem collapsed={true} endPoint='/discover' linkName='Search' icon={searchIcon} />
+      <NavItem collapsed={true} endPoint='/messages' linkName='Message' icon={messageIcon} />
+      <NavItem collapsed={true} endPoint='' linkName='Notification' icon={notificationIcon} />
+      <NavItem collapsed={true} endPoint='/newpost' linkName='Create' icon={createIcon} />
+      <NavItem collapsed={true} endPoint='/profile' linkName='Profile' icon={testImg} />
+      <div className={styles.navItemLinkCollapsed}>
+        <div className={styles.navItemCollapsed} onClick={logout}>
+          <div className={styles.navIconContainerCollapsed}>
+              <img src={logOutIcon} className={styles.navIconCollapsed} alt="" />
+          </div>
+          <div className={styles.linkNameContainerCollapsed}>Logout</div>
+        </div>
+      </div>
+    </div>
+  )
   return (
     
     <div className={styles.navBar}>
@@ -40,12 +65,12 @@ const NavBar = () => {
         <img src={Logo2} className={styles.logoImg2} alt="" />
         
       </div>
-      <NavItem endPoint='/' linkName='Home' icon={homeIcon} />
-      <NavItem endPoint='/discover' linkName='Search' icon={searchIcon} />
-      <NavItem endPoint='/messages' linkName='Message' icon={messageIcon} />
-      <NavItem endPoint='' linkName='Notification' icon={notificationIcon} />
-      <NavItem endPoint='/newpost' linkName='Create' icon={createIcon} />
-      <NavItem endPoint='/profile' linkName='Profile' icon={testImg} />
+      <NavItem collapsed={false} endPoint='/' linkName='Home' icon={homeIcon} />
+      <NavItem collapsed={false} endPoint='/discover' linkName='Search' icon={searchIcon} />
+      <NavItem collapsed={false} endPoint='/messages' linkName='Message' icon={messageIcon} />
+      <NavItem collapsed={false} endPoint='' linkName='Notification' icon={notificationIcon} />
+      <NavItem collapsed={false} endPoint='/newpost' linkName='Create' icon={createIcon} />
+      <NavItem collapsed={false} endPoint='/profile' linkName='Profile' icon={testImg} />
       <div className={styles.navItemLink}>
         <div className={styles.navItem} onClick={logout}>
           <div className={styles.navIconContainer}>

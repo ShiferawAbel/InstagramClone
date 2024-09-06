@@ -8,6 +8,8 @@ import CreatePost from "./pages/CreatePost";
 import Discover from "./pages/Discover";
 import ProfileDetail from "./pages/ProfileDetail";
 import Messages from "./pages/Messages";
+import { Children } from "react";
+import ChatSpace from "./components/ChatSpace/ChatSpace";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +19,10 @@ const router = createBrowserRouter([
       {index: true, element: <HomePage />},
       {path: '/profile', element: <UserProfilePage />},
       {path: '/newpost', element: <CreatePost />},
-      {path: '/messages', element: <Messages />},
+      {path: '/messages/', element: <Messages />, children: [
+        {path: '', element: <ChatSpace />},
+        {path: ':id', element: <ChatSpace />},
+      ]},
       {path: '/discover', element: <Discover />},
       {path: '/user/:id', element: <ProfileDetail />},
     ],

@@ -11,14 +11,7 @@ const usePostComments = (postId: number, onAdd: () => void) => {
   return useMutation({
   mutationFn: async (comment: PostComment) =>{
     await apiClient
-      .post<PostComment>(`/comments/${postId}`, comment, {
-        headers: {
-          'XSRF-TOKEN': csrfToken,
-          'Accept': 'application/json',
-        },
-        withXSRFToken: true,
-        withCredentials: true,
-      })
+      .post<PostComment>(`/comments/${postId}`, comment)
       .then(res => res.data)},
   onSuccess: (savedData, sentComment) => {
     onAdd();

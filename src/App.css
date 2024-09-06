@@ -1,9 +1,7 @@
 .mainPage {
     max-width: 77%;
     margin-left: 23%;
-    padding-top: 20px;
     min-height: 100vh;
-    padding-bottom: 40px;
     background: black;
 }
 
@@ -117,8 +115,6 @@
   
 } */
 
-
-
 @media screen and (max-width: 870px) {
   .mainPage {
     max-width: 90%;
@@ -154,4 +150,12 @@
 .messages {
   display: flex;
   height: 100vh;
+  
+}
+
+.mainPageCollapsed {
+  max-width: 95%;
+  margin-left: 66px;
+  min-height: 100vh;
+  background: black;
 }

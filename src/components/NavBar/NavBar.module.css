@@ -102,3 +102,77 @@
     display: none;
   }
 }
+
+.navBarCollapsed {
+  min-width:5%;
+  height: 100vh;
+  padding-left: 10px;
+  padding-right: 10px;
+  position: fixed;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(255, 255, 255, 0.198);
+  font-size: 1.3em;
+  background-color: black;
+  z-index: 9;
+}
+
+.logoContainerCollapsed {
+  margin-top: 50px;
+  margin-bottom: 35px;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  place-content: center;
+  /* padding-left: 10px; */
+}
+.logoImgCollapsed {
+  width: 100px;
+  display: none;
+}
+
+.navItemLinkCollapsed {
+  text-decoration: none;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.navItemCollapsed {
+  width: 100%;
+  padding: 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.navItemCollapsed:hover {
+  background-color: rgba(80, 76, 76, 0.427);
+}
+
+.navIconContainerCollapsed {
+  width: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 100%;
+  
+}
+
+.navIconCollapsed {
+  width: 100%;
+  border-radius: 100%;
+}
+
+.logoImg2Collapsed {
+  width: 40px;
+}
+
+.logoImgCollapsed {
+  display: none;
+}
+
+
+.linkNameContainerCollapsed {
+  display: none;
+}
