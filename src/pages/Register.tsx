@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FormEvent, useRef } from 'react';
 import { getCsrfToken } from './Login';
 import { useNavigate } from 'react-router-dom';
+import LoadingBar from '../components/LoadingBar';
 
 interface UserSubmit {
   name: string;
@@ -22,7 +23,7 @@ const Register = () => {
   const confirmPassword = useRef<HTMLInputElement>(null);
   const file = useRef<HTMLInputElement>(null);
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isLoading, error } = useMutation<UserSubmit, Error, UserSubmit> ({
     mutationFn: async (user: UserSubmit) => {
       await axios.get("http://localhost:8000/sanctum/csrf-cookie", { withCredentials: true });
       const csrfToken = getCsrfToken();
@@ -37,7 +38,7 @@ const Register = () => {
         formData.append('profile_url', user.profileUrl); // Ensure this matches the expected key in your backend
       }
 
-      await axios.post('http://localhost:8000/api/register', formData, {
+      await axios.post<UserSubmit>('http://localhost:8000/api/register', formData, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'multipart/form-data',
@@ -45,15 +46,12 @@ const Register = () => {
         },
         withCredentials: true,
         withXSRFToken: true,
-      }).then(res => console.log(res.data)).catch(error => console.error('Error:', error));
+      }).then(res => res.data);
       return user
     },
     onSuccess: () => {
       navigate('/')
     },
-    onError: (error) => {
-      console.log(error);
-    }
   });
 
   const handleSubmit = (e: FormEvent) => {
@@ -72,15 +70,17 @@ const Register = () => {
 
   return (
     <div className="center-form-div loginform">
+      {isLoading && <LoadingBar />}
       <form onSubmit={handleSubmit} encType='multipart/form-data'>
         <h1>Sign Up</h1>
+        {error && error.response.data.message}
         <input ref={name} className="text-field" type="text" placeholder="Name" name="name" />
         <input ref={email} className="text-field" type="email" placeholder="Email" name="email" />
         <input ref={userName} className="text-field" type="text" placeholder="User Name" name="user_name" />
         <input ref={password} className="text-field" type="password" name="password" placeholder="Password" />
         <input ref={confirmPassword} className="text-field" type="password" name="password_confirmation" placeholder="Confirm Password" />
         <input ref={file} type="file" name="profile_url" placeholder="Choose profile pic" className="file-field" />
-        <button type="submit">Sign Up</button>
+        <button type="submit">{ isLoading ? 'Signing Up...' : 'Sign Up' }</button>
       </form>
     </div>
   );

@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { User } from "../components/Posts/PostCard";
 import useUserStore from "../services/userStore";
+import useIsLoggedOut from "../services/loggedOutStore";
+import LoadingBar from "../components/LoadingBar";
 
 export const getCsrfToken = (): string | undefined => {
   const csrfCookie = document.cookie
@@ -41,21 +43,17 @@ const login = async (credentials: Credentials): Promise<User> => {
 const Login = () => {
   // const { setCsrfToken } = useCsrfStore();
   const {user, setUser} = useUserStore();
+  const { setIsLoggedOut } = useIsLoggedOut();
   const email = useRef<HTMLInputElement | null>(null);
   const password = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isLoading, error } = useMutation<User, Error, Credentials>({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log('logged in habibi');
-      setUser(data); // Log the user data returned from the backend
-      console.log(user)
+      setIsLoggedOut(false);
       navigate('/');
     },
-    onError: (error) => {
-      console.error('Login failed:', error); // Handle login errors
-    }
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -69,15 +67,19 @@ const Login = () => {
   };
 
   return (
-    <div className="center-form-div loginform">
-      <form onSubmit={handleSubmit}>
-        <h1>Log In</h1>
-        <input ref={email} className="text-field" type="email" placeholder="email" name="email" />
-        <input ref={password} className="text-field" type="password" placeholder="Password" name="password" />
-        <button type="submit">{isLoading ? 'Logging In...' : 'Log In'}</button>
-      </form>
-      <p>Not registered yet? <Link to='/register'>register</Link></p>
-    </div>
+    <>
+      { isLoading && <LoadingBar /> }
+      <div className="center-form-div loginform">
+        <form onSubmit={handleSubmit}>
+          <h1>Log In</h1>
+          {error && error.response.data.message}
+          <input ref={email} className="text-field" type="email" placeholder="email" name="email" />
+          <input ref={password} className="text-field" type="password" placeholder="Password" name="password" />
+          <button type="submit">{isLoading ? 'Logging In...' : 'Log In'}</button>
+        </form>
+        <p>Not registered yet? <Link to='/register'>register</Link></p>
+      </div>
+    </>
   );
 };
 

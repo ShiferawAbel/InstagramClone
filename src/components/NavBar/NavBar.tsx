@@ -15,16 +15,24 @@ import useIsLoggedOut from '../../services/loggedOutStore'
 import apiClient from '../../services/apiClient'
 import logOutIcon from './logout-icon.webp'
 import useNavBarProperties from '../../services/NavbarPropertiesStore'
+import { useState } from 'react'
+import LoadingBar from '../LoadingBar'
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 
 const NavBar = () => {
   const { collapsed, setCollapsed } = useNavBarProperties()
   const { isLoggedOut, setIsLoggedOut } = useIsLoggedOut();
+  const [ loggingOut, setLoggingOut ] = useState(false);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const navItemList = [
     {linkName: 'Home', homeIcon}
   ]
 
   const logout = async () => {
     const csrfToken = getCsrfToken();
+    setLoggingOut(true);
     await apiClient.post("http://localhost:8000/api/logout", {}, {
       headers: {
         accept: "application/json",
@@ -32,11 +40,13 @@ const NavBar = () => {
       },
       withXSRFToken: true,
       withCredentials: true,
-    });
-    
+    }).then(res => queryClient.invalidateQueries(['user', 'posts']));
+    setLoggingOut(false)
+    navigate('/login')
   }
   if (collapsed) return (
     <div className={styles.navBarCollapsed}>
+      {loggingOut && <LoadingBar />}
       <div className={styles.logoContainerCollapsed}>
         <img src={Logo2} className={styles.logoImg2Collapsed} alt="" />
         
@@ -60,6 +70,7 @@ const NavBar = () => {
   return (
     
     <div className={styles.navBar}>
+      {loggingOut && <LoadingBar />}
       <div className={styles.logoContainer}>
         <img src={Logo} className={styles.logoImg} alt="" />
         <img src={Logo2} className={styles.logoImg2} alt="" />

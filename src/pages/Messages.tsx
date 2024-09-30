@@ -1,21 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ChatsList from '../components/ChatsList/ChatsList'
 import ChatSpace from '../components/ChatSpace/ChatSpace'
 import NavBar from '../components/NavBar/NavBar'
 import useNavBarProperties from '../services/NavbarPropertiesStore'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigation } from 'react-router-dom'
+import LoadingBar from '../components/LoadingBar'
 
 const Messages = () => {
   const { collapsed, setCollapsed } = useNavBarProperties();
-  
-  if (collapsed == false) {
-    setCollapsed(true)
-  }
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+  useEffect(() => {
+    if (collapsed == false) {
+      setCollapsed(true)
+    }
+  })
+
+  useEffect(() => {
+    if (navigation.state === 'loading') {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [navigation.state]);
   return (
-    <div className='messages'>
-      <ChatsList />
-      <Outlet />
-    </div>
+    <>
+      {loading && <LoadingBar />}
+      <div className='messages'>
+        <ChatsList />
+        <Outlet />
+      </div>
+    </>
   )
 }
 

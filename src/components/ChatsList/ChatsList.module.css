@@ -63,10 +63,25 @@
 
 .chatUserName {
   flex: 1;
+  display: flex;
+  justify-content: space-between;
 }
 .lastMessage {
   color: rgba(255, 255, 255, 0.557);
   text-wrap: nowrap;
   overflow: hidden;
   flex: 1;
+}
+
+.unreadMessages {
+  font-weight: 800;
+}
+
+@media screen and (max-width: 540px) {
+  .chatsList {
+    width: 100%;
+  }
+  .chatsList.hide {
+    display: none;
+  }
 }

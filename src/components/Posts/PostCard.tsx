@@ -7,6 +7,7 @@ import axios from "axios";
 import { useState } from "react";
 import Comments from "./Comments";
 import { Post } from "../../hooks/usePosts";
+import saveImg from './save.png';
 export interface User {
   id: number;
   name: string;
@@ -57,7 +58,7 @@ const PostCard = ({ post }: PostProps) => {
         </div>
         <div className={styles.savePost}>
           <img
-            src={notificationImg}
+            src={saveImg}
             alt=""
             className={styles.interactionImage}
           />

@@ -114,28 +114,6 @@
 /* .account-details {
   
 } */
-
-@media screen and (max-width: 870px) {
-  .mainPage {
-    max-width: 90%;
-    margin-left: 10%;
-    padding-inline: 10px;
-  }
-  .find-friends-box {
-    width: 70%;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  .mainPage {
-    max-width: 100%;
-    margin-left: 0;
-  }
-  .find-friends-box {
-    width: 99%;
-  }
-}
-
 .appLoaderContainer {
   height: 100vh;
   display: flex;
@@ -158,4 +136,43 @@
   margin-left: 66px;
   min-height: 100vh;
   background: black;
+}
+
+.spinner-grow {
+  margin: auto;
+}
+
+@media screen and (max-width: 870px) {
+  .mainPage {
+    max-width: 90%;
+    margin-left: 10%;
+    padding-inline: 10px;
+  }
+  .find-friends-box {
+    width: 70%;
+  }
+
+  .center-form-div {
+    width: 90%;
+    padding: 5px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .mainPage {
+    max-width: 100%;
+    margin-left: 0;
+  }
+  
+  .mainPageCollapsed {
+    max-width: 100%;
+    margin-left: 0;
+  }
+  .find-friends-box {
+    width: 99%;
+  }
+  
+  .hide {
+    display: none;
+  }
 }

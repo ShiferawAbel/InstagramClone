@@ -1,10 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { getCsrfToken } from "./Login";
 import { User } from "../components/Posts/PostCard";
 import { Link } from "react-router-dom";
 import { FetchAuthUser } from "./Layout";
+import useNavBarProperties from "../services/NavbarPropertiesStore";
+import LoadingBar from "../components/LoadingBar";
 
 interface FetchUsersList {
   data: User[];
@@ -18,6 +20,12 @@ interface InteractionInterface {
 const Discover = () => {
   const queryClient = useQueryClient();
   const csrfToken = getCsrfToken();
+  const { collapsed, setCollapsed } = useNavBarProperties();
+  useEffect(() => {
+    if (collapsed == true) {
+    setCollapsed(false);
+    }  
+  })
   const { data: authUser } = useQuery({
     queryKey: ["user"],
     queryFn: async () =>
@@ -85,37 +93,48 @@ const Discover = () => {
     mutate({ id, interactionType } as InteractionInterface);
   };
   return (
-    <div className="find-friends-box">
-      <h1>Find new friends to follow</h1>
-      {interactionLoading && 'processing your request'}
-      {data?.map((user) => (
-        <div className="user-box" key={user.id}>
-          <Link to={"/user/" + user.id} className="to-profile">
-            <div className="account-details">
-              <div className="profile-img-friend">
-                <img src={user.profileUrl} alt="" />
-              </div>
-              <div className="name-status">
-                <div className="div">{user.userName}</div>
-                <div className="status">
-                  1 post {user.followerNumber} followers {user.followingNumber}{" "}
-                  following
+    <>
+      { isLoading && <LoadingBar /> }
+      <div className="find-friends-box">
+        <h1>Find new friends to follow</h1>
+        {interactionLoading && <LoadingBar />}
+        {isLoading
+          ? "Loading..."
+          : data?.map((user) => (
+              <div className="user-box" key={user.id}>
+                <Link to={"/user/" + user.id} className="to-profile">
+                  <div className="account-details">
+                    <div className="profile-img-friend">
+                      <img src={user.profileUrl} alt="" />
+                    </div>
+                    <div className="name-status">
+                      <div className="div">{user.userName}</div>
+                      <div className="status">
+                        1 post {user.followerNumber} followers{" "}
+                        {user.followingNumber} following
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                <div
+                  className="follow-btn"
+                  style={{ cursor: "pointer" }}
+                  id="interactions"
+                >
+                  {user.followers?.find((user) => user.id == authUser?.id) ? (
+                    <span onClick={() => interaction(user.id, "unfollow")}>
+                      Unfollow
+                    </span>
+                  ) : (
+                    <span onClick={() => interaction(user.id, "follow")}>
+                      Follow
+                    </span>
+                  )}
                 </div>
               </div>
-            </div>
-          </Link>
-          <div className="follow-btn" style={{ cursor: "pointer" }} id="interactions">
-            {user.followers?.find((user) => user.id == authUser?.id) ? (
-              <span onClick={() => interaction(user.id, "unfollow")}>
-                Unfollow
-              </span>
-            ) : (
-              <span onClick={() => interaction(user.id, "follow")}>Follow</span>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
+            ))}
+      </div>
+    </>
   );
 };
 

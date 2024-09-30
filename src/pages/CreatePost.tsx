@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { FormEvent, useRef } from 'react'
 import { getCsrfToken } from './Login';
 import { useNavigate } from 'react-router-dom';
+import LoadingBar from '../components/LoadingBar';
 
 interface NewPost {
   file: File;
@@ -48,13 +49,16 @@ const CreatePost = () => {
     }
   }
   return (
-    <div className="center-form-div">
-        <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
-            <input ref={file} type="file" className="file-field" name="file_url" id="file"/>
-            <input ref={caption} className="text-field" type="text" placeholder="Caption" name="caption"/>
-            <button type="submit">{isLoading ? 'Posting...' : 'Post'}</button>
-        </form>
-    </div>
+    <>
+      {isLoading && <LoadingBar />}
+      <div className="center-form-div">
+          <form onSubmit={(e) => handleSubmit(e)} encType="multipart/form-data">
+              <input ref={file} type="file" className="file-field" name="file_url" id="file"/>
+              <input ref={caption} className="text-field" type="text" placeholder="Caption" name="caption"/>
+              <button type="submit">{isLoading ? 'Posting...' : 'Post'}</button>
+          </form>
+      </div>
+    </>
   )
 }
 

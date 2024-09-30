@@ -3,9 +3,18 @@ import axios from "axios";
 import styles from "../profile.module.css";
 import { getCsrfToken } from "./Login";
 import { FetchAuthUser } from "./Layout";
+import useNavBarProperties from "../services/NavbarPropertiesStore";
+import { useEffect } from "react";
+import LoadingBar from "../components/LoadingBar";
 
 const UserProfilePage = () => {
   //   const user = useUserStore.getState().user;
+  const { collapsed, setCollapsed } = useNavBarProperties();
+  useEffect(() => {
+    if (collapsed == true) {
+    setCollapsed(false);
+    }  
+  })
   const csrfToken = getCsrfToken();
   const { data: user, isLoading } = useQuery({
     queryKey: ["user", "posts"],
@@ -28,7 +37,7 @@ const UserProfilePage = () => {
   return (
     <div className={styles.profile}>
       {isLoading ? (
-        "loading..."
+        <LoadingBar />
       ) : (
         <div className={styles.profileDetailBox}>
           <div className={styles.profilePictureShow}>

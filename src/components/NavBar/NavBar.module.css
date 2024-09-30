@@ -25,6 +25,7 @@
 
 .navItemLink {
   text-decoration: none;
+  cursor: pointer;
   font-size: 0.7em;
   font-weight: 600;
 }
@@ -88,7 +89,19 @@
 }
 
 @media screen and (max-width: 500px) {
+  .logoImg2Collapsed {
+    display: none;
+  }
   .navBar {
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 90%;
+  }
+  .navBarCollapsed {
     display: flex;
     position: fixed;
     justify-content: space-between;
@@ -132,6 +145,7 @@
 
 .navItemLinkCollapsed {
   text-decoration: none;
+  cursor: pointer;
   font-size: 0.7em;
   font-weight: 600;
 }
