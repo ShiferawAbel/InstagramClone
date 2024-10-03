@@ -8,6 +8,9 @@ export interface Post {
   id: number;
   uploadedBy: string;
   user: User;
+  likedByUser: boolean,
+  likedBy: User[];
+  postedAt: string;
 }
 
 interface FetchResponse {

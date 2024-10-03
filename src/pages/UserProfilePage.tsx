@@ -6,6 +6,7 @@ import { FetchAuthUser } from "./Layout";
 import useNavBarProperties from "../services/NavbarPropertiesStore";
 import { useEffect } from "react";
 import LoadingBar from "../components/LoadingBar";
+import { Link } from "react-router-dom";
 
 const UserProfilePage = () => {
   //   const user = useUserStore.getState().user;
@@ -64,11 +65,7 @@ const UserProfilePage = () => {
             </div>
             <div className={styles.profileOptions}>
               <div className={styles.messageEdit}>
-                <a href="/edit/{{ $user->id }}">Edit</a>
-              </div>
-
-              <div className={styles.messageEdit}>
-                <a href="/startchat/{{ $user->id }}">Message</a>
+                <Link to="/edit-profile">Edit</Link>
               </div>
             </div>
           </div>

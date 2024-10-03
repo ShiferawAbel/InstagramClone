@@ -23,6 +23,7 @@
 
 .profilePictureContainer {
   width: 50px;
+  border: 1px solid white;
   height: 50px;
   border-radius: 100%;
   margin-right: 10px;

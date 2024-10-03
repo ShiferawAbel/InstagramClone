@@ -7,45 +7,24 @@ import { Link } from "react-router-dom";
 import { FetchAuthUser } from "./Layout";
 import useNavBarProperties from "../services/NavbarPropertiesStore";
 import LoadingBar from "../components/LoadingBar";
+import useUserStore from "../services/userStore";
+import useInteractions, { InteractionInterface } from "../hooks/useInteractions";
 
 interface FetchUsersList {
   data: User[];
 }
 
-interface InteractionInterface {
-  id: number;
-  interactionType: "follow" | "unfollow";
-}
 
 const Discover = () => {
   const queryClient = useQueryClient();
   const csrfToken = getCsrfToken();
+  const {user: authUser} = useUserStore();
   const { collapsed, setCollapsed } = useNavBarProperties();
   useEffect(() => {
     if (collapsed == true) {
     setCollapsed(false);
     }  
   })
-  const { data: authUser } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () =>
-      await axios
-        .get<FetchAuthUser>("http://localhost:8000/api/v1/user", {
-          params: {
-            followers: true,
-            following: true,
-          },
-          headers: {
-            accept: "application/json",
-            "X-XSRF-TOKEN": csrfToken,
-          },
-          withCredentials: true,
-        })
-        .then((res) => {
-          return res.data.user;
-        }),
-  });
-
   const { data, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -69,25 +48,7 @@ const Discover = () => {
     },
   });
 
-  const { mutate, isLoading: interactionLoading } = useMutation({
-    mutationFn: async ({ id, interactionType }: InteractionInterface) =>
-      axios
-        .post(
-          `http://localhost:8000/api/v1/${interactionType}/${id}`,
-          {},
-          {
-            headers: {
-              "XSRF-TOKEN": csrfToken,
-              Accept: "application/json",
-            },
-            withCredentials: true,
-            withXSRFToken: true,
-          }
-        )
-        .then((res) => {
-          queryClient.invalidateQueries(["users"]);
-        }),
-  });
+  const { mutate, isLoading: interactionLoading } = useInteractions()
 
   const interaction = (id: number, interactionType: string) => {
     mutate({ id, interactionType } as InteractionInterface);

@@ -1,13 +1,19 @@
 import styles from "./posts.module.css";
 import testImg from "./tester.jpg";
 import notificationImg from "./notification.png";
+import likedImg from "./liked.png";
 import commentImg from "./comment.png";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import Comments from "./Comments";
 import { Post } from "../../hooks/usePosts";
-import saveImg from './save.png';
+import saveImg from "./save.png";
+import useUserStore from "../../services/userStore";
+import apiClient from "../../services/apiClient";
+import PopUp from "../PopUp/PopUp";
+import timeGap from "../../hooks/timeGap";
+import { Link } from "react-router-dom";
 export interface User {
   id: number;
   name: string;
@@ -16,8 +22,8 @@ export interface User {
   userName: string;
   followerNumber: number;
   followingNumber: number;
-  following: number;
   followers: User[];
+  following: User[];
   posts: Post[];
 }
 
@@ -27,69 +33,103 @@ interface PostProps {
 
 const PostCard = ({ post }: PostProps) => {
   const [showComment, setShowComment] = useState(false);
+  const [likedByUser, setLikedByUser] = useState(post.likedByUser);
+  const [showLikedBy, setShowLikedBy] = useState(false);
+  const [numberOfLikes, setNumberOfLikes] = useState(post.likedBy.length);
+  const queryClient = useQueryClient();
+  const { user } = useUserStore();
+  const likePost = async () => {
+    setLikedByUser(true);
+    setNumberOfLikes(numberOfLikes+1)
+    await apiClient.post(`/posts/${post.id}/like`, {})
+    queryClient.invalidateQueries(['posts']);
+  };
+  const removeLike = async () => {
+    setNumberOfLikes(numberOfLikes-1)
+    setLikedByUser(false);
+    queryClient.invalidateQueries(['posts'])
+    await apiClient.post(`/posts/${post.id}/remove-like`, {})
 
+  };
+  console.log(post.postedAt)
   return (
-    <div className={styles.post}>
-      <div className={styles.postHeader}>
-        <div className={styles.profileContainer}>
-          <div className={styles.profilePictureContainer}>
-            <img
-              src={post.user.profileUrl}
-              className={styles.profilePicture}
-              alt=""
-            />
+    <>
+      {showLikedBy && <PopUp onCancel={() => setShowLikedBy(false)} popUpType="LIKEDBY" users={post.likedBy}/>}
+      <div className={styles.post}>
+        <div className={styles.postHeader}>
+          <div className={styles.profileContainer}>
+            <div className={styles.profilePictureContainer}>
+              <img
+                src={post.user.profileUrl}
+                className={styles.profilePicture}
+                alt=""
+              />
+            </div>
+            <div className={styles.userNameContainer}>
+            <Link className={styles.userNameLink} to={`/user/${post.user.id}`}>{post.user.userName}</Link> . {timeGap(post.postedAt)}
+            </div>
           </div>
-          <div className={styles.userNameContainer}>
-            {post.user.userName} . 15h
+          <div className={styles.moreOptionsContainer}>more</div>
+        </div>
+        <div className={styles.postContent} onDoubleClick={() => likedByUser ? removeLike() : likePost()}>
+          <img src={post.fileUrl} className={styles.postImg} alt="" />
+        </div>
+        <div className={styles.postInteractions}>
+          <div
+            className={styles.likeBtn}
+            style={{ width: "35px", marginTop: "5px" }}
+          >
+            <div className={styles.iconContainer}>
+              {likedByUser ? (
+                <img
+                  onClick={() => removeLike()}
+                  src={likedImg}
+                  alt=""
+                  className={styles.interactionImage}
+                />
+              ) : (
+                <img
+                  onClick={() => likePost()}
+                  src={notificationImg}
+                  alt=""
+                  className={styles.interactionImage}
+                />
+              )}
+
+            </div>
+            <div className={styles.likes} onClick={() => setShowLikedBy(true)}>{numberOfLikes+' Likes'}</div>
+          </div>
+          <div className={styles.savePost}>
+            <img src={saveImg} alt="" className={styles.interactionImage} />
           </div>
         </div>
-        <div className={styles.moreOptionsContainer}>more</div>
-      </div>
-      <div className={styles.postContent}>
-        <img src={post.fileUrl} className={styles.postImg} alt="" />
-      </div>
-      <div className={styles.postInteractions}>
-        <div className={styles.likeBtn}>
-          <img
-            src={notificationImg}
-            alt=""
-            className={styles.interactionImage}
-          />
-        </div>
-        <div className={styles.savePost}>
-          <img
-            src={saveImg}
-            alt=""
-            className={styles.interactionImage}
-          />
-        </div>
-      </div>
-      <div className={styles.postCaption}>
-        <div className={styles.profileContainer}>
-          <div className={styles.profilePictureContainer}>
-            <img
-              src={post.user.profileUrl}
-              className={styles.profilePicture}
-              alt=""
-            />
-          </div>
-          <div className={styles.userNameContainer}>
-            {post.uploadedBy}{" "}
-            <span className={styles.caption}>{post.caption}</span>
+        <div className={styles.postCaption}>
+          <div className={styles.profileContainer}>
+            <div className={styles.profilePictureContainer}>
+              <img
+                src={post.user.profileUrl}
+                className={styles.profilePicture}
+                alt=""
+              />
+            </div>
+            <div className={styles.userNameContainer}>
+              <Link className={styles.userNameLink} to={`/user/${post.user.id}`}><span className={styles.userName}>{post.user.userName+'  '}</span></Link>{" "}
+              <span className={styles.caption}>{post.caption}</span>
+            </div>
           </div>
         </div>
+        {showComment ? (
+          <Comments post={post} onHideComment={() => setShowComment(false)} />
+        ) : (
+          <div
+            className={styles.postComment}
+            onClick={() => setShowComment(true)}
+          >
+            view all comments
+          </div>
+        )}
       </div>
-      {showComment ? (
-        <Comments post={post} onHideComment={() => setShowComment(false)} />
-      ) : (
-        <div
-          className={styles.postComment}
-          onClick={() => setShowComment(true)}
-        >
-          view all comments
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 

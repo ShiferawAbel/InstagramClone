@@ -1,0 +1,89 @@
+.backGround {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.924);
+}
+
+.popUp {
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  padding-block: 5px;
+  margin-top: 150px;
+  border-radius: 12px;
+  background-color: black;
+  border: 1px solid #fff;
+  box-shadow: 5px rgb(255, 255, 255);
+}
+
+.list {
+  width: 100%;
+  height: 81%;
+  padding-block: 5px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+.popUpHeader {
+  display: flex;
+  justify-content: center;
+  padding-block: 5;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.49);
+}
+
+.user {
+  width: 100%;
+  padding: 4px;
+  margin-bottom:4px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.userDetail {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.user:hover {
+  background-color: rgba(255, 255, 255, 0.229);
+}
+
+.userLink {
+  text-decoration: none;
+  
+}
+.userLink:hover {
+  text-decoration: underline;
+
+}
+.profileContainer {
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+  margin-right: 8px;
+  border: 1px solid white;
+  border-radius: 100%;
+}
+.profileContainer img{
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.interact {
+  height: 30px;
+  background-color: blue;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  outline: none;
+  border: none;
+  justify-content: center;
+}

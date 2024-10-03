@@ -10,7 +10,6 @@ import NavItem from './NavItem';
 import Logo2 from '../../../public/iglogo.svg'
 import testImg from '../Posts/tester.jpg'
 import { getCsrfToken } from '../../pages/Login'
-import axios from 'axios'
 import useIsLoggedOut from '../../services/loggedOutStore'
 import apiClient from '../../services/apiClient'
 import logOutIcon from './logout-icon.webp'
@@ -21,8 +20,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 
 const NavBar = () => {
-  const { collapsed, setCollapsed } = useNavBarProperties()
-  const { isLoggedOut, setIsLoggedOut } = useIsLoggedOut();
+  const { collapsed, setCollapsed } = useNavBarProperties();
   const [ loggingOut, setLoggingOut ] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -47,9 +45,9 @@ const NavBar = () => {
   if (collapsed) return (
     <div className={styles.navBarCollapsed}>
       {loggingOut && <LoadingBar />}
-      <div className={styles.logoContainerCollapsed}>
         <img src={Logo2} className={styles.logoImg2Collapsed} alt="" />
         
+      <div className={styles.logoContainerCollapsed}>
       </div>
       <NavItem collapsed={true} endPoint='/' linkName='Home' icon={homeIcon} />
       <NavItem collapsed={true} endPoint='/discover' linkName='Search' icon={searchIcon} />

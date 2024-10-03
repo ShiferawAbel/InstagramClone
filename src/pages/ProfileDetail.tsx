@@ -6,8 +6,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { User } from "../components/Posts/PostCard";
 import apiClient from "../services/apiClient";
 import useNavBarProperties from "../services/NavbarPropertiesStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingBar from "../components/LoadingBar";
+import PopUp from "../components/PopUp/PopUp";
 
 interface FetchUser {
   user: User;
@@ -22,6 +23,8 @@ const ProfileDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const csrfToken = getCsrfToken();
+  const [ showFollowers, setShowFollowers] = useState(false);
+  const [ showFollowing, setShowFollowing] = useState(false);
   const { collapsed, setCollapsed } = useNavBarProperties();
   useEffect(() => {
     if (collapsed == true) {
@@ -52,13 +55,16 @@ const ProfileDetail = () => {
       navigate(`/messages/${ss}`);
     },
   });
-
+  console.log(showFollowing)
   const startNewChat = () => {
     if (id) {
       newChat({ with_user: parseInt(id) });
     }
   };
   return (
+    <>
+    {(showFollowers && data?.user.followers) && <PopUp popUpType="FOLLOWERS" users={data.user.followers} onCancel={() => setShowFollowers(false)}/>}
+    {(showFollowing && data?.user.following) && <PopUp popUpType="FOLLOWING" users={data.user.following} onCancel={() => setShowFollowing(false)}/>}
     <div className={styles.profile}>
       {creatingChat && <LoadingBar />}
       {isLoading ? (
@@ -85,19 +91,16 @@ const ProfileDetail = () => {
                 <span className={styles.descNumb}>
                   {data?.user?.followerNumber}
                 </span>{" "}
-                followers
+                <span onClick={() => setShowFollowers(true)}>followers</span>
               </div>
               <div className={styles.following}>
                 <span className={styles.descNumb}>
                   {data?.user?.followingNumber}
                 </span>{" "}
-                following
+                <span onClick={() => setShowFollowing(true)}>following</span>
               </div>
             </div>
             <div className={styles.profileOptions}>
-              <div className={styles.messageEdit}>
-                <a href="/edit/{{ $user->id }}">Edit</a>
-              </div>
 
               <div className={styles.messageEdit}>
                 {data?.chatCommon ? (
@@ -124,6 +127,7 @@ const ProfileDetail = () => {
           ))}
       </div>
     </div>
+    </>
   );
 };
 

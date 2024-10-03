@@ -11,6 +11,7 @@ import { User } from "../components/Posts/PostCard";
 import useNavBarProperties from "../services/NavbarPropertiesStore";
 import useIsLoggedOut from "../services/loggedOutStore";
 import LoadingBar from "../components/LoadingBar";
+import apiClient from "../services/apiClient";
 
 export interface FetchAuthUser {
   user: User;
@@ -28,14 +29,8 @@ const Layout = () => {
   const { data, isLoading } = useQuery<User, Error>({
     queryKey: ["user"],
     queryFn: async () =>
-      await axios
-        .get<FetchAuthUser>("http://localhost:8000/api/v1/user", {
-          headers: {
-            accept: "application/json",
-            "X-XSRF-TOKEN": csrfToken,
-          },
-          withCredentials: true,
-        })
+      await apiClient
+        .get<FetchAuthUser>("http://localhost:8000/api/v1/user")
         .then((res) => {
           return res.data.user;
         }),
@@ -45,6 +40,7 @@ const Layout = () => {
     onSuccess: (data) => {
       setUser(data);
     },
+    
     retry: 0,
     staleTime: 10000,
   });

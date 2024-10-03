@@ -7,6 +7,7 @@ import { getCsrfToken } from "../../pages/Login";
 import useComments from "../../hooks/useComments";
 import { Post } from "../../hooks/usePosts";
 import timeGap from "../../hooks/timeGap";
+import { Link } from "react-router-dom";
 
 interface CommentProps {
   post: Post;
@@ -35,8 +36,9 @@ const Comments = ({ post, onHideComment }: CommentProps) => {
               <img src={comment.user.profileUrl} alt="" />
             </div>
             <div className={styles.commentDetail}>
+              
               <div className={styles.commenterName}>
-                {comment.user.userName} . {timeGap(comment.createdAt)}{" "}
+              <Link to={`user/${comment.user.id}`}>{comment.user.userName} </Link>. {timeGap(comment.createdAt)}{" "}
               </div>
               <div className={styles.commentBody}>{comment.commentBody}</div>
             </div>

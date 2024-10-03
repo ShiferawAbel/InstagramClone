@@ -18,7 +18,7 @@
   align-items: center;
   padding: 5px;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.502);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.502); */
 }
 
 .profileContainer {
@@ -52,14 +52,37 @@
 }
 
 .postInteractions {
-  border-top: 1px solid rgba(255, 255, 255, 0.512);
+  /* border-top: 1px solid rgba(255, 255, 255, 0.512); */
   display: flex;
   justify-content: space-between;
   padding-inline: 10px;
+  margin-bottom: 10px;
 }
 
 .likeBtn {
-  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* min-width: 600px; */
+}
+
+.likes {
+  width: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 0.7;
+}
+.iconContainer {
+  width: 35px;
+  height: 35px;
+  line-height: 0;
+}
+
+.iconContainer img {
+  width: 100%;
+  height: 100%;
 }
 
 .savePost {
@@ -67,6 +90,7 @@
 }
 .interactionImage {
   width: 100%;
+  cursor: pointer;
 }
 
 .postCaption {
@@ -80,11 +104,18 @@
   height: 30px;
 }
 
-.caption {
+.userName {
   font-size: 16px;
   font-weight: 800;
 }
 
+.caption {
+  font-size: 14px;
+}
+
+.userNameLink {
+  text-decoration: none;
+}
 
 .postComment {
   text-decoration: underline;
@@ -120,7 +151,7 @@
 
 .singleComment {
   display: flex;
-  border: 1px solid rgba(255, 255, 255, 0.537);
+  /* border: 1px solid rgba(255, 255, 255, 0.537); */
   margin-top: 10px;
   padding: 5px;
 }
@@ -129,6 +160,7 @@
   width: 50px;
   height: 50px;
   border-radius: 100%;
+  border: 1px solid white;
   margin-right: 15px;
   
 }

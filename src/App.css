@@ -2,6 +2,7 @@
     max-width: 77%;
     margin-left: 23%;
     min-height: 100vh;
+    padding-top: 10px;
     background: black;
 }
 
@@ -54,9 +55,6 @@
 
 .center-form-div button:hover {
   background-color: rgb(107, 66, 66);
-}
-.loginform {
-  margin-top: 100px;
 }
 
 .find-friends-box {
@@ -171,7 +169,7 @@
   .find-friends-box {
     width: 99%;
   }
-  
+
   .hide {
     display: none;
   }

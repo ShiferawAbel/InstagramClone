@@ -19,7 +19,7 @@ const NavItem = ({ linkName, icon, endPoint, collapsed }: Props) => {
             {endPoint == "/profile" ? (
               <img
                 src={user.profileUrl}
-                className={styles.navIconCollapsed}
+                className={styles.profileImg}
                 alt=""
               />
             ) : (
@@ -34,7 +34,7 @@ const NavItem = ({ linkName, icon, endPoint, collapsed }: Props) => {
         <div className={styles.navItem}>
           <div className={styles.navIconContainer}>
             {endPoint == "/profile" ? (
-              <img src={user.profileUrl} className={styles.navIcon} alt="" />
+              <img src={user.profileUrl} className={styles.profileImg} alt="" />
             ) : (
               <img src={icon} className={styles.navIcon} alt="" />
             )}

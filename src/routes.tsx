@@ -10,6 +10,7 @@ import Discover from './pages/Discover';
 import ProfileDetail from './pages/ProfileDetail';
 import Messages from './pages/Messages';
 import ChatSpace from './components/ChatSpace/ChatSpace';
+import EditProfile from './pages/EditProfile';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: '/profile', element: <UserProfilePage /> },
+      { path: '/edit-profile', element: <EditProfile /> },
       { path: '/newpost', element: <CreatePost /> },
       {
         path: '/messages/',

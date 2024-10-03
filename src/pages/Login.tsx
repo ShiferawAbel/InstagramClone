@@ -69,15 +69,17 @@ const Login = () => {
   return (
     <>
       { isLoading && <LoadingBar /> }
-      <div className="center-form-div loginform">
-        <form onSubmit={handleSubmit}>
-          <h1>Log In</h1>
-          {error && error.response.data.message}
-          <input ref={email} className="text-field" type="email" placeholder="email" name="email" />
-          <input ref={password} className="text-field" type="password" placeholder="Password" name="password" />
-          <button type="submit">{isLoading ? 'Logging In...' : 'Log In'}</button>
-        </form>
-        <p>Not registered yet? <Link to='/register'>register</Link></p>
+      <div style={{paddingTop: '66px'}}>
+        <div className="center-form-div loginform">
+          <form onSubmit={handleSubmit}>
+            <h1>Log In</h1>
+            {error && error.response.data.message}
+            <input ref={email} className="text-field" type="email" placeholder="email" name="email" />
+            <input ref={password} className="text-field" type="password" placeholder="Password" name="password" />
+            <button type="submit">{isLoading ? 'Logging In...' : 'Log In'}</button>
+          </form>
+          <p>Not registered yet? <Link to='/register'>register</Link></p>
+        </div>
       </div>
     </>
   );
