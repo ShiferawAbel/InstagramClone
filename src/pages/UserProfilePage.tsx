@@ -9,6 +9,7 @@ import LoadingBar from "../components/LoadingBar";
 import { Link } from "react-router-dom";
 import avatar from "../assets/avatar.png";
 import apiClient from "../services/apiClient";
+import PopUp from "../components/PopUp/PopUp";
 
 const UserProfilePage = () => {
   //   const user = useUserStore.getState().user;
@@ -16,7 +17,9 @@ const UserProfilePage = () => {
   const [updatingProfile, setUpdatingProfile] = useState(false);
   const profileUrl = useRef<HTMLInputElement | null>(null);
   const submitBtn = useRef<HTMLButtonElement>(null);
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
   useEffect(() => {
     if (collapsed == true) {
       setCollapsed(false);
@@ -59,8 +62,12 @@ const UserProfilePage = () => {
     }
     setUpdatingProfile(false);
   };
+  console.log(user?.following)
   return (
+    
     <div className={styles.profile}>
+      {showFollowers && user?.followers && <PopUp onCancel={() => setShowFollowers(false)} popUpType="FOLLOWERS" users={user?.followers} profile={true}/>}
+      {showFollowing && user?.following && <PopUp onCancel={() => setShowFollowing(false)} popUpType="FOLLOWING" users={user?.following} profile={true}/>}
       {isLoading ? (
         <LoadingBar />
       ) : (
@@ -84,6 +91,7 @@ const UserProfilePage = () => {
               <button
                 type="button"
                 id="submitBtn"
+                className={styles.avatarBtn}
                 ref={submitBtn}
               >
                 <img src={avatar} onClick={() => profileUrl.current?.click()} className={styles.avatar} alt="" />
@@ -98,11 +106,11 @@ const UserProfilePage = () => {
               </div>
               <div className={styles.followers}>
                 <span className={styles.descNumb}>{user?.followerNumber}</span>{" "}
-                followers
+                <span onClick={() => setShowFollowers(true)}>followers</span>
               </div>
               <div className={styles.following}>
                 <span className={styles.descNumb}>{user?.followingNumber}</span>{" "}
-                following
+                <span onClick={() => setShowFollowing(true)}>following</span>
               </div>
             </div>
             <div className={styles.profileOptions}>

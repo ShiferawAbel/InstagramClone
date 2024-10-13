@@ -11,19 +11,26 @@ interface PopUpProps {
   popUpType: "FOLLOWERS" | "FOLLOWING" | "LIKEDBY";
   users: User[];
   userId?: number;
+  profile?: boolean; 
   onCancel: () => void;
 }
-const PopUp = ({ popUpType, users, onCancel, userId }: PopUpProps) => {
+const PopUp = ({ popUpType, users, onCancel, userId, profile }: PopUpProps) => {
   const [ interacting, setInteracting ] = useState(false);
   const queryClient = useQueryClient();
   const { mutate: interact, isLoading } = useInteractions();
   const { user: authUser } = useUserStore();
+  console.log('hey niggas')
   const interaction = async (id: number, interactionType: "follow" | "unfollow") => {
     setInteracting(true)
     if (userId) {
+
       interact({ id, interactionType, invalidate: userId });
     } else {
-      interact({ id, interactionType, invalidate: "posts" });
+      if (profile) {
+        interact({ id, interactionType, invalidate: "user" });
+      } else {
+        interact({ id, interactionType, invalidate: "posts" });
+      }
     }
     setInteracting(false)
   };
