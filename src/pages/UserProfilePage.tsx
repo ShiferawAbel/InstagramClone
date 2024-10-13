@@ -1,21 +1,27 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "../profile.module.css";
 import { getCsrfToken } from "./Login";
 import { FetchAuthUser } from "./Layout";
 import useNavBarProperties from "../services/NavbarPropertiesStore";
-import { useEffect } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import LoadingBar from "../components/LoadingBar";
 import { Link } from "react-router-dom";
+import avatar from "../assets/avatar.png";
+import apiClient from "../services/apiClient";
 
 const UserProfilePage = () => {
   //   const user = useUserStore.getState().user;
   const { collapsed, setCollapsed } = useNavBarProperties();
+  const [updatingProfile, setUpdatingProfile] = useState(false);
+  const profileUrl = useRef<HTMLInputElement | null>(null);
+  const submitBtn = useRef<HTMLButtonElement>(null);
+  const queryClient = useQueryClient()
   useEffect(() => {
     if (collapsed == true) {
-    setCollapsed(false);
-    }  
-  })
+      setCollapsed(false);
+    }
+  });
   const csrfToken = getCsrfToken();
   const { data: user, isLoading } = useQuery({
     queryKey: ["user", "posts"],
@@ -34,7 +40,25 @@ const UserProfilePage = () => {
         })
         .then((res) => res.data.user),
   });
-  console.log(user);
+
+  const updateProfile = async () => {
+    setUpdatingProfile(true);
+    const formData = new FormData();
+    if (profileUrl.current && profileUrl.current.files && profileUrl.current.files[0]) {
+      formData.append("profile_url", profileUrl.current.files[0]);
+      await apiClient.post(
+        `/update-profile`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      queryClient.invalidateQueries(['user'])
+    }
+    setUpdatingProfile(false);
+  };
   return (
     <div className={styles.profile}>
       {isLoading ? (
@@ -47,6 +71,24 @@ const UserProfilePage = () => {
               src={user?.profileUrl}
               alt=""
             ></img>
+            <form id="updateProfilePic" encType="multipart/form-data">
+              {updatingProfile && <LoadingBar />}
+              <input
+                ref={profileUrl}
+                type="file"
+                name="profile_url"
+                id="fileInput"
+                onChange={updateProfile}
+                hidden
+              />
+              <button
+                type="button"
+                id="submitBtn"
+                ref={submitBtn}
+              >
+                <img src={avatar} onClick={() => profileUrl.current?.click()} className={styles.avatar} alt="" />
+              </button>
+            </form>
           </div>
           <div className={styles.accountDesc}>
             <div className={styles.accountConfig}>{user?.userName}</div>
@@ -74,9 +116,11 @@ const UserProfilePage = () => {
       <div className={styles.allUserPosts}>
         {user?.posts &&
           user.posts.map((post) => (
-            <div key={post.id} className={styles.profilePost}>
-              <img src={post.fileUrl} alt="" />
-            </div>
+            <Link key={post.id} to={`/post/${post.id}`}>
+              <div className={styles.profilePost}>
+                <img src={post.fileUrl} alt="" />
+              </div>
+            </Link>
           ))}
       </div>
     </div>

@@ -14,6 +14,9 @@ import apiClient from "../../services/apiClient";
 import PopUp from "../PopUp/PopUp";
 import timeGap from "../../hooks/timeGap";
 import { Link } from "react-router-dom";
+import { Note } from "../Stories/Stories";
+import deleteIcon from "./delete.png";
+import LoadingBar from "../LoadingBar";
 export interface User {
   id: number;
   name: string;
@@ -25,6 +28,7 @@ export interface User {
   followers: User[];
   following: User[];
   posts: Post[];
+  note?: Note[];
 }
 
 interface PostProps {
@@ -36,25 +40,51 @@ const PostCard = ({ post }: PostProps) => {
   const [likedByUser, setLikedByUser] = useState(post.likedByUser);
   const [showLikedBy, setShowLikedBy] = useState(false);
   const [numberOfLikes, setNumberOfLikes] = useState(post.likedBy.length);
+  const [isDeleting, setIsDeleting] = useState(false);
   const queryClient = useQueryClient();
   const { user } = useUserStore();
+  const [lastTap, setLastTap] = useState<number>(0);
   const likePost = async () => {
     setLikedByUser(true);
-    setNumberOfLikes(numberOfLikes+1)
-    await apiClient.post(`/posts/${post.id}/like`, {})
-    queryClient.invalidateQueries(['posts']);
+    setNumberOfLikes(numberOfLikes + 1);
+    await apiClient.post(`/posts/${post.id}/like`, {});
+    await queryClient.invalidateQueries(["posts"]);
   };
   const removeLike = async () => {
-    setNumberOfLikes(numberOfLikes-1)
+    setNumberOfLikes(numberOfLikes - 1);
     setLikedByUser(false);
-    queryClient.invalidateQueries(['posts'])
-    await apiClient.post(`/posts/${post.id}/remove-like`, {})
-
+    queryClient.invalidateQueries(["posts"]);
+    await apiClient.post(`/posts/${post.id}/remove-like`, {});
   };
-  console.log(post.postedAt)
+
+  const handleDoubleTap = (event: React.TouchEvent<HTMLDivElement>) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapLength < 300 && tapLength > 0) {
+      likedByUser ? removeLike() : likePost();
+    }
+
+    setLastTap(currentTime);
+  };
+
+  const deletePost = async () => {
+    setIsDeleting(true);
+    await apiClient.delete(`/posts/${post.id}`);
+    await queryClient.invalidateQueries(['posts'])
+    setIsDeleting(false);
+  };
   return (
     <>
-      {showLikedBy && <PopUp onCancel={() => setShowLikedBy(false)} popUpType="LIKEDBY" users={post.likedBy}/>}
+      {isDeleting && <LoadingBar />}
+      {showLikedBy && (
+        <PopUp
+          onCancel={() => setShowLikedBy(false)}
+          popUpType="LIKEDBY"
+          users={post.likedBy}
+          invalidate={[]}
+        />
+      )}
       <div className={styles.post}>
         <div className={styles.postHeader}>
           <div className={styles.profileContainer}>
@@ -66,12 +96,26 @@ const PostCard = ({ post }: PostProps) => {
               />
             </div>
             <div className={styles.userNameContainer}>
-            <Link className={styles.userNameLink} to={`/user/${post.user.id}`}>{post.user.userName}</Link> . {timeGap(post.postedAt)}
+              <Link
+                className={styles.userNameLink}
+                to={`/user/${post.user.id}`}
+              >
+                {post.user.userName}
+              </Link>{" "}
+              . <span className={styles.timeGap}>{timeGap(post.postedAt)}</span>
             </div>
           </div>
-          <div className={styles.moreOptionsContainer}>more</div>
+          {user.id == post.user.id && (
+            <button onClick={deletePost} className={styles.deleteIcon}>
+              <img src={deleteIcon} className={styles.deleteImg} alt="" />
+            </button>
+          )}
         </div>
-        <div className={styles.postContent} onDoubleClick={() => likedByUser ? removeLike() : likePost()}>
+        <div
+          className={styles.postContent}
+          onTouchEnd={handleDoubleTap}
+          onDoubleClick={() => (likedByUser ? removeLike() : likePost())}
+        >
           <img src={post.fileUrl} className={styles.postImg} alt="" />
         </div>
         <div className={styles.postInteractions}>
@@ -95,9 +139,10 @@ const PostCard = ({ post }: PostProps) => {
                   className={styles.interactionImage}
                 />
               )}
-
             </div>
-            <div className={styles.likes} onClick={() => setShowLikedBy(true)}>{numberOfLikes+' Likes'}</div>
+            <div className={styles.likes} onClick={() => setShowLikedBy(true)}>
+              {numberOfLikes + " Likes"}
+            </div>
           </div>
           <div className={styles.savePost}>
             <img src={saveImg} alt="" className={styles.interactionImage} />
@@ -113,7 +158,14 @@ const PostCard = ({ post }: PostProps) => {
               />
             </div>
             <div className={styles.userNameContainer}>
-              <Link className={styles.userNameLink} to={`/user/${post.user.id}`}><span className={styles.userName}>{post.user.userName+'  '}</span></Link>{" "}
+              <Link
+                className={styles.userNameLink}
+                to={`/user/${post.user.id}`}
+              >
+                <span className={styles.userName}>
+                  {post.user.userName + "  "}
+                </span>
+              </Link>{" "}
               <span className={styles.caption}>{post.caption}</span>
             </div>
           </div>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getCsrfToken } from '../../pages/Login';
 import usePostComments from '../../hooks/usePostComments';
 import { Post } from '../../hooks/usePosts';
+import LoadingBar from '../LoadingBar';
 
 interface CommentFormProps {
   post: Post;
@@ -29,6 +30,7 @@ const CommentForm = ({ post } : CommentFormProps) => {
   } 
   return (
     <div className={styles.postCommentContainer}>
+      { postComment.isLoading && <LoadingBar /> }
       <form action="" onSubmit={(e) => handleSubmit(e)}>
         <input ref={commentRef} type="text" placeholder='Write Your Comment Here...' />
         <button type='submit'>{ postComment.isLoading ? 'Posting...' : 'Post' }</button>

@@ -12,12 +12,12 @@ const usePostComments = (postId: number, onAdd: () => void) => {
   mutationFn: async (comment: PostComment) =>{
     await apiClient
       .post<PostComment>(`/comments/${postId}`, comment)
-      .then(res => res.data)},
+      .then(res => res.data)
+    await queryClient.invalidateQueries({
+      queryKey: ['comments', postId, 'post']
+    })},
   onSuccess: (savedData, sentComment) => {
     onAdd();
-    queryClient.invalidateQueries({
-      queryKey: ['comments', postId, 'post']
-    })
   }
 })}
 

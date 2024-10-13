@@ -38,10 +38,10 @@ console.log(user)
       formData.append('email', userSubmit.email);
       formData.append('user_name', userSubmit.userName);
 
-      await axios.post<UserSubmit>(`http://localhost:8000/api/v1/users/${user.id}`, formData, {
+      await axios.patch<UserSubmit>(`http://localhost:8000/api/v1/users/${user.id}`, formData, {
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
           'X-XSRF-TOKEN': csrfToken,
         },
         withCredentials: true,

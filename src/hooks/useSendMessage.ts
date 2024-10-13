@@ -11,11 +11,11 @@ interface SendMessage {
 const useSendMessage = (chatId: number, onSend: () => void) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (message: SendMessage) =>
-      apiClient.post("/messages", message).then((res) => res.data),
+    mutationFn: async (message: SendMessage) =>{
+      await apiClient.post("/messages", message).then((res) => res.data),
+      await queryClient.invalidateQueries(["chats", chatId]);
+      queryClient.invalidateQueries(["chats"]);},
     onSuccess: () => {
-      queryClient.invalidateQueries(["chats", chatId]);
-      queryClient.invalidateQueries(["chats"]);
       onSend();
       const chatMessages = document.getElementById("chatMessages");
       if (chatMessages) {

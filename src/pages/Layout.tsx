@@ -12,6 +12,7 @@ import useNavBarProperties from "../services/NavbarPropertiesStore";
 import useIsLoggedOut from "../services/loggedOutStore";
 import LoadingBar from "../components/LoadingBar";
 import apiClient from "../services/apiClient";
+import TopNav from "../components/NavBar/TopNav";
 
 export interface FetchAuthUser {
   user: User;
@@ -63,7 +64,6 @@ const Layout = () => {
 
   return (
     <>
-      
       <NavBar />
       {collapsed ? (
         <div className="mainPageCollapsed">

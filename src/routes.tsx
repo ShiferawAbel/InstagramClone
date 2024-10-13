@@ -11,6 +11,7 @@ import ProfileDetail from './pages/ProfileDetail';
 import Messages from './pages/Messages';
 import ChatSpace from './components/ChatSpace/ChatSpace';
 import EditProfile from './pages/EditProfile';
+import ShowPost from './pages/ShowPost';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: '/profile', element: <UserProfilePage /> },
       { path: '/edit-profile', element: <EditProfile /> },
+      { path: '/post/:id', element: <ShowPost /> },
       { path: '/newpost', element: <CreatePost /> },
       {
         path: '/messages/',

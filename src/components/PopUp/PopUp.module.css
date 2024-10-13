@@ -80,6 +80,7 @@
   height: 30px;
   background-color: blue;
   padding: 5px 10px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   border-radius: 16px;

@@ -3,6 +3,7 @@ import Posts from '../components/Posts/Posts'
 import Stories from '../components/Stories/Stories'
 import '../App.css'
 import useNavBarProperties from '../services/NavbarPropertiesStore'
+import TopNav from '../components/NavBar/TopNav'
 
 const HomePage = () => {
   const { collapsed, setCollapsed } = useNavBarProperties();
@@ -13,6 +14,7 @@ const HomePage = () => {
   })
   return (
     <>
+      <TopNav />
       <Stories />
       <Posts />
     </>

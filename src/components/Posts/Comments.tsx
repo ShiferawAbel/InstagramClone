@@ -38,7 +38,7 @@ const Comments = ({ post, onHideComment }: CommentProps) => {
             <div className={styles.commentDetail}>
               
               <div className={styles.commenterName}>
-              <Link to={`user/${comment.user.id}`}>{comment.user.userName} </Link>. {timeGap(comment.createdAt)}{" "}
+              <Link to={`user/${comment.user.id}`}>{comment.user.userName} </Link> <span className={styles.timeGap}>.{timeGap(comment.createdAt)}</span>{" "}
               </div>
               <div className={styles.commentBody}>{comment.commentBody}</div>
             </div>

@@ -38,6 +38,7 @@
 .chatNewMessage {
   background-color: black;
   position: sticky;
+  border-block: 1px solid blueviolet;
   bottom: 0;
   right: 0;
   left: 0;
@@ -46,10 +47,13 @@
 .chatNewMessage form {
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: 60px;
 }
 
 .messageField {
-  width: 90%;
+  flex: 1;
   padding: 0 10px;
   height: 100%;
   box-sizing: border-box;
@@ -62,7 +66,7 @@
 }
 
 .sendBtn {
-  width: 10%;
+  width: 50px;
   height: 100%;
   border: none;
   outline: none;
@@ -178,7 +182,7 @@
 .selectedReply {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid white ;
+  border-block: 1px solid white ;
 }
 
 .selectedReply button {
@@ -199,5 +203,9 @@
   }
   .chatNewMessage {
     bottom: 60px;
+  }
+
+  .chatMessages {
+    padding: 70px 20px;
   }
 }

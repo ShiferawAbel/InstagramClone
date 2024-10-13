@@ -50,6 +50,12 @@ const ChatSpace = () => {
     }
   };
   useEffect(() => {
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  })
+  useEffect(() => {
     if (document.getElementById('chatsList')) {
       if (chatId.id) {
         document.getElementById('chatsList').className = chatsStyles.chatsList + ' hide';

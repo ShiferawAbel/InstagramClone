@@ -1,7 +1,7 @@
 .storiesList {
   max-width: 700px;
   height: 140px;
-  /* background: blueviolet; */
+  /* min-width: 700px; */
   padding: 0 10px;
   margin: 0 auto;
   display: flex;
@@ -10,6 +10,7 @@
   overflow-y: hidden;
   scrollbar-width: 0;
   align-items: end;
+  box-sizing: border-box;
 }
 
 
@@ -20,11 +21,16 @@
   display: none; /* Hide the scrollbar completely */
 }
 
+.deleteIcon {
+  width: 20px;
+}
 .storyContainer {
   height: 70%;
   position: relative;
   width: 63px;
   margin-right: 60px;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .note {
@@ -37,10 +43,35 @@
   border-radius: 10px;
   position: absolute;
   top: -40px;
+  color: white;
   right: -60px;
   background-color: rgb(48, 37, 37);
 }
 
+.noteField {
+  background-color: inherit;
+  border: none;
+}
+
+.shareBtn {
+  border: none;
+  background-color: inherit;
+  color: blueviolet;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  border: none;
+  background-color: inherit;
+  color: blueviolet;
+  cursor: pointer;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+.noteField:focus {
+  outline: 0;
+}
 .notes ::-webkit-scrollbar {
   display: none;
   

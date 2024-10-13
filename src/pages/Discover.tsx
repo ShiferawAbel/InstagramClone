@@ -8,23 +8,24 @@ import { FetchAuthUser } from "./Layout";
 import useNavBarProperties from "../services/NavbarPropertiesStore";
 import LoadingBar from "../components/LoadingBar";
 import useUserStore from "../services/userStore";
-import useInteractions, { InteractionInterface } from "../hooks/useInteractions";
+import useInteractions, {
+  InteractionInterface,
+} from "../hooks/useInteractions";
 
 interface FetchUsersList {
   data: User[];
 }
 
-
 const Discover = () => {
   const queryClient = useQueryClient();
   const csrfToken = getCsrfToken();
-  const {user: authUser} = useUserStore();
+  const { user: authUser } = useUserStore();
   const { collapsed, setCollapsed } = useNavBarProperties();
   useEffect(() => {
     if (collapsed == true) {
-    setCollapsed(false);
-    }  
-  })
+      setCollapsed(false);
+    }
+  });
   const { data, isLoading } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -44,18 +45,18 @@ const Discover = () => {
       return response;
     },
     onSuccess: (data) => {
-      console.log(data);
+      // console.log(data);
     },
   });
 
-  const { mutate, isLoading: interactionLoading } = useInteractions()
+  const { mutate, isLoading: interactionLoading } = useInteractions();
 
   const interaction = (id: number, interactionType: string) => {
-    mutate({ id, interactionType } as InteractionInterface);
+    mutate({ id, interactionType, invalidate: "users" } as InteractionInterface);
   };
   return (
     <>
-      { isLoading && <LoadingBar /> }
+      {isLoading && <LoadingBar />}
       <div className="find-friends-box">
         <h1>Find new friends to follow</h1>
         {interactionLoading && <LoadingBar />}
@@ -83,13 +84,19 @@ const Discover = () => {
                   id="interactions"
                 >
                   {user.followers?.find((user) => user.id == authUser?.id) ? (
-                    <span onClick={() => interaction(user.id, "unfollow")}>
+                    <button
+                      onClick={() => interaction(user.id, "unfollow")}
+                      className="interact"
+                    >
                       Unfollow
-                    </span>
+                    </button>
                   ) : (
-                    <span onClick={() => interaction(user.id, "follow")}>
+                    <button
+                      onClick={() => interaction(user.id, "follow")}
+                      className="interact"
+                    >
                       Follow
-                    </span>
+                    </button>
                   )}
                 </div>
               </div>
