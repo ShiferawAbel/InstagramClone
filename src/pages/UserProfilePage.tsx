@@ -114,7 +114,7 @@ const UserProfilePage = () => {
             </div>
             <div className={styles.profileOptions}>
               <div className={styles.messageEdit}>
-                <Link to="/edit-profile">Edit</Link>
+                <Link className={styles.interact} to="/edit-profile">Edit</Link>
               </div>
             </div>
           </div>
