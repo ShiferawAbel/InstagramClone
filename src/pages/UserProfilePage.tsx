@@ -64,7 +64,6 @@ const UserProfilePage = () => {
   };
   console.log(user?.following)
   return (
-    
     <div className={styles.profile}>
       {showFollowers && user?.followers && <PopUp onCancel={() => setShowFollowers(false)} popUpType="FOLLOWERS" users={user?.followers} profile={true}/>}
       {showFollowing && user?.following && <PopUp onCancel={() => setShowFollowing(false)} popUpType="FOLLOWING" users={user?.following} profile={true}/>}
