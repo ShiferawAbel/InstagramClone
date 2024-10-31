@@ -11,17 +11,25 @@ import useSendMessage from "../../hooks/useSendMessage";
 import useChat from "../../hooks/useChat";
 import LoadingBar from "../LoadingBar";
 import chatsStyles from '../ChatsList/ChatsList.module.css'
+import useCurrentChat from "../../services/CurrentChatStore";
 
 const ChatSpace = () => {
   const chatId = useParams();
-
+  
   if (!chatId.id)
     return (
       <div className={styles.chatSpace}>
         <h1>Select Chat</h1>
       </div>
     );
-
+  
+  const {setChatId} = useCurrentChat();
+  useEffect(() => {
+    if (chatId.id) {
+      setChatId(parseInt(chatId.id));
+    }
+  }, [chatId.id]);
+  
   const { data: chat, isLoading } = useChat(parseInt(chatId.id));
 
   const { mutate: sendMessage, isLoading: isSending } = useSendMessage(parseInt(chatId.id), () => {
@@ -56,11 +64,12 @@ const ChatSpace = () => {
     }
   })
   useEffect(() => {
-    if (document.getElementById('chatsList')) {
+    const chatsList = document.getElementById('chatsList');
+    if (chatsList) {
       if (chatId.id) {
-        document.getElementById('chatsList').className = chatsStyles.chatsList + ' hide';
+        chatsList.className = chatsStyles.chatsList + ' hide';
       } else {
-        document.getElementById('chatsList').className = chatsStyles.chatsList;
+        chatsList.className = chatsStyles.chatsList;
       }
     }
   }, chatId.id ? [chatId.id] : [] )
@@ -93,6 +102,7 @@ const ChatSpace = () => {
             { isSending && <LoadingBar /> }
             {chat?.messages?.map((message) => (
               <ChatBox
+                key={message.id}
                 onReply={(message) => setSelectedReply(message)}
                 message={message}
               />

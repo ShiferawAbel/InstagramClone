@@ -1,3 +1,4 @@
+
 .chatsList {
   /* background-color: gray; */
   margin-left: 5px;
@@ -18,6 +19,15 @@
 }
 
 .chatInstance {
+  padding: 10px 5px;
+  display: flex;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  transition: .4s all;
+}
+
+.selectedChat {
+  background-color: blue;
   padding: 10px 5px;
   display: flex;
   box-sizing: border-box;
@@ -79,6 +89,7 @@
 .unreadMessages {
   font-weight: 800;
 }
+
 
 @media screen and (max-width: 540px) {
   .chatsList {

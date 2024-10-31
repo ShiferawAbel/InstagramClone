@@ -8,6 +8,7 @@ import useUserStore from "../../services/userStore";
 import { Link } from "react-router-dom";
 import { Chat } from "../../hooks/useChat";
 import LoadingBar from "../LoadingBar";
+import useCurrentChat from "../../services/CurrentChatStore";
 
 export interface Message {
   id: number;
@@ -22,6 +23,8 @@ interface FetchChatlist {
 }
 const ChatsList = () => {
   const authUser = useUserStore.getState().user;
+  const {chatId} = useCurrentChat();
+  console.log(chatId)
   const { data, isLoading } = useQuery({
     queryKey: ["chats"],
     queryFn: () =>
@@ -33,7 +36,7 @@ const ChatsList = () => {
       <h1>All Chats</h1>
       {data?.map((chat) => chat.lastMessage && (
         <Link className={styles.chatLink} key={chat.id} to={`/messages/${chat.id}`}>
-          <div className={styles.chatInstance}>
+          <div className={chatId === chat.id ? styles.selectedChat : styles.chatInstance}>
             <div className={styles.chatWithProfile}>
               <div className={styles.profilePictureContainer}>
                 <img
